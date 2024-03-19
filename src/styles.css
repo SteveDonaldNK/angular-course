@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: rgb(63, 6, 197);
+    --secondary-color: rgba(81, 15, 235, 0.638);
+    --accent-color: rgba(63, 6, 197, 0.09);
+    font-family: sans-serif;
+}

@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 
 @Component({
   template: `
     <main>
-      <header class="brand-name">
-        <img class="brand-logo" src="/assets/logo.png" alt ="logo" aria-hidden="true">
-      </header>
+      <a [routerLink]="['/']">
+        <header class="brand-name">
+          <img class="brand-logo" src="/assets/logo.png" alt ="logo" aria-hidden="true">
+        </header>
+      </a>
       <section class="content">
-        <app-home></app-home>
+        <router-outlet></router-outlet>
       </section>
     </main>
   `,
@@ -18,6 +20,7 @@ import { HomeComponent } from './home/home.component';
   imports: [
     RouterOutlet,
     HomeComponent,
+    RouterModule,
   ],
   // templateUrl: './app.component.html',
   // styleUrl: './app.component.css'
