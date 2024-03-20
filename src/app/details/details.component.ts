@@ -3,12 +3,16 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HousingService } from '../housing.service';
 import { Housinglocation } from '../housinglocation';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [CommonModule,],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+  ],
   template: `
   <article>
     <img class="listing-photo" [src]="housinglocation?.photo"
@@ -25,19 +29,50 @@ import { Housinglocation } from '../housinglocation';
         <li>Does this location have laundry: {{housinglocation?.laundry}}</li>
       </ul>
     </section>
+    <section class="listing-apply">
+      <h2 class="section-heading">Apply now to live here</h2>
+      <form [formGroup]="applyForm" (submit)="submitApplication()">
+        <label for="first-name">First Name</label>
+        <input id="first-name" type="text" formControlName="firstName">
+
+        <label for="last-name">Last Name</label>
+        <input id="last-name" type="text" formControlName="lastName">
+
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email">
+        <button type="submit" class="primary">Apply now</button>
+      </form>
+    </section>
   </article>
   `,
   styleUrl: './details.component.css'
 })
 export class DetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
-  housingService = inject(HousingService)
-  housinglocationId = -1;
+  housingService: HousingService = inject(HousingService)
+  // housinglocationId = -1;
   housinglocation: Housinglocation | undefined;
+  applyForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    email: new FormControl('')
+  })
 
   constructor() {
-    this.housinglocationId = Number(this.route.snapshot.params['id']);
-    this.housinglocation = this.housingService.getHousingLocationById(this.housinglocationId)
+    const housinglocationId = parseInt(this.route.snapshot.params['id'], 10);
+    // this.housinglocation = this.housingService.getHousingLocationById(this.housinglocationId)
+
+    this.housingService.getHousingLocationById(housinglocationId).then((housinglocation) => {
+      this.housinglocation = housinglocation;
+    })
+  }
+
+  submitApplication() {
+    this.housingService.submitApplication(
+      this.applyForm.value.firstName ?? '',
+      this.applyForm.value.lastName ?? '',
+      this.applyForm.value.email ?? '',
+    );
   }
 
 }

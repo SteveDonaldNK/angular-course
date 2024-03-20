@@ -63,6 +63,15 @@
     border-left: none;
     border-bottom: solid .3px;
   }
+
+  button {
+    padding: 10px;
+    border: solid 1px rgb(63, 6, 197);
+    background: rgb(63, 6, 197);
+    color: white;
+    border-radius: 8px;
+  }
+  
   @media (max-width: 1024px) {
     .listing-photo {
       width: 100%;
